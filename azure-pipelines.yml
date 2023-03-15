@@ -1,0 +1,30 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+- master
+stages:
+- stage:
+  pool:
+    vmImage: windows-latest
+  jobs:
+  - job: backend_build
+    steps:
+    - task: UseDotNet@2
+      displayName: Install Sdk
+      inputs:
+        packageType: 'sdk'
+        version: 
+    - task: DotNetCoreCLI@2
+      displayName: dotnet restore
+      inputs:
+        command: 'restore'
+        projects: '**/*.sln'
+        feedsToUse: 'select'
+    - task: DotNetCoreCLI@2
+      displayName: dotnet build
+      inputs:
+        command: 'build'
+        projects: '**/*.sln'
